@@ -24,6 +24,11 @@ io.on('connection', (socket) => {
 
 });
 
+app.get('/hello', (req, res) => {
+    console.log('hello');
+    res.send('Hello, world!');
+});
+
 const port = process.env.PORT || 3000; // Use the port from .env or fallback to 5000
 
 server.listen(port, () => {
