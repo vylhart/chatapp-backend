@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const {initSocket} = require('./lib/socket');
 const {connectToMongoDB, Tweet, User} = require('./lib/db');
 const {configureTweetDB} = require('./lib/tweetDB');
-const {configureUserDB} = require('./lib/userDB');
+const {configureUserDB} = require('./lib/UserDB');
 
 app.use(cors());
 app.use(bodyParser.json());
