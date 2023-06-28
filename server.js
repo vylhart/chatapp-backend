@@ -1,35 +1,36 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(server, {
-    cors: {
-        origin: '*',
-    },
-});
 const dotenv = require('dotenv');
+const cors = require("cors");
+const bodyParser = require('body-parser');
+const {initSocket} = require('./lib/socket');
+const {connectToMongoDB, Tweet, User} = require('./lib/db');
+const {configureTweetDB} = require('./lib/tweetDB');
+const {configureUserDB} = require('./lib/userDB');
 
+app.use(cors());
+app.use(bodyParser.json());
 dotenv.config(); // Load environment variables from .env file
 
-io.on('connection', (socket) => {
-    console.log('A user connected');
-
-    socket.on('sendMessage', (message) => {
-        console.log('Received message:', message);
-        io.emit('receiveMessage', message);
+connectToMongoDB()
+    .then(() => {
+        console.log('Connected to MongoDB');
+    })
+    .catch((error) => {
+        console.error('Error connecting to MongoDB:', error);
     });
 
-    socket.on('disconnect', () => {
-        console.log('A user disconnected');
-    });
-
-});
+initSocket(server);
+configureTweetDB(app, Tweet);
+configureUserDB(app, User);
 
 app.get('/hello', (req, res) => {
     console.log('hello');
     res.send('Hello, world!');
 });
 
-const port = process.env.PORT || 3000; // Use the port from .env or fallback to 5000
+const port = process.env.PORT || 3000;
 
 server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
