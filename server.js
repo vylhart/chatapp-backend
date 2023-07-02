@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const cors = require("cors");
 const bodyParser = require('body-parser');
 const {initSocket} = require('./lib/socket');
-const {connectToMongoDB, Tweet, User} = require('./lib/db');
+const {connectToMongoDB, Tweet, User, Credential} = require('./lib/db');
 const {configureTweetDB} = require('./lib/tweetDB');
 const {configureUserDB} = require('./lib/UserDB');
 
@@ -23,7 +23,7 @@ connectToMongoDB()
 
 initSocket(server);
 configureTweetDB(app, Tweet);
-configureUserDB(app, User);
+configureUserDB(app, Credential, User);
 
 app.get('/hello', (req, res) => {
     console.log('hello');
