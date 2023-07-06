@@ -23,7 +23,7 @@ connectToMongoDB()
     });
 
 initSocket(server);
-configureTweetDB(app, Tweet);
+configureTweetDB(app, Tweet, Profile);
 configureUserDB(app, Credential, User);
 configureProfileDB(app, Profile);
 
