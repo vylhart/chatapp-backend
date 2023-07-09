@@ -9,6 +9,9 @@ const {connectToMongoDB, Tweet, User, Credential, Follow} = require('./lib/schem
 const {configureTweet} = require('./lib/api/tweet');
 const {configureUser} = require('./lib/api/user');
 const {configureRelation} = require("./lib/api/relation");
+const axios = require('axios');
+const {configureNews} = require("./lib/news.js");
+
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -26,6 +29,9 @@ initSocket(server);
 configureTweet(app, Tweet);
 configureUser(app, Credential, User);
 configureRelation(app, Follow);
+
+const apikey = process.env.NEWS_API_KEY;
+configureNews(app, axios, apikey, Tweet);
 
 app.get('/hello', (req, res) => {
     console.log('hello');
