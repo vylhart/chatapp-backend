@@ -5,10 +5,10 @@ const dotenv = require('dotenv');
 const cors = require("cors");
 const bodyParser = require('body-parser');
 const {initSocket} = require('./lib/socket');
-const {connectToMongoDB, Tweet, User, Credential, Follow} = require('./lib/db');
-const {configureTweetDB} = require('./lib/tweetDB');
-const {configureUserDB} = require('./lib/UserDB');
-const {configureRelationshipApi} = require("./lib/relationshipApi");
+const {connectToMongoDB, Tweet, User, Credential, Follow} = require('./lib/schema');
+const {configureTweet} = require('./lib/api/tweet');
+const {configureUser} = require('./lib/api/user');
+const {configureRelation} = require("./lib/api/relation");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -23,9 +23,9 @@ connectToMongoDB()
     });
 
 initSocket(server);
-configureTweetDB(app, Tweet);
-configureUserDB(app, Credential, User);
-configureRelationshipApi(app, Follow);
+configureTweet(app, Tweet);
+configureUser(app, Credential, User);
+configureRelation(app, Follow);
 
 app.get('/hello', (req, res) => {
     console.log('hello');
